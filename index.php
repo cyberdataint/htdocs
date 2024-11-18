@@ -4,8 +4,7 @@ include("db.php");
 
 $userInfo = '';
 
-// Debug: Check session contents
-var_dump($_SESSION);
+
 
 // Check if the user is logged in
 if (isset($_SESSION['user_id'])) {

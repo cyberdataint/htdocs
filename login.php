@@ -2,32 +2,39 @@
 session_start();
 include("db.php");
 
-// Enable error reporting for debugging
+// Enable error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+$errorMessage = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $password = mysqli_real_escape_string($con, $_POST['password']);
 
+    // Debugging: Output entered values (remove in production)
+    echo "Email: $email<br>";
+    echo "Password: $password<br>";
+
+    // Query for plain text password matching
     $query = "SELECT User_ID, Name_First, Name_Last FROM USER WHERE Email = '$email' AND Password = '$password'";
     $result = mysqli_query($con, $query);
 
-    if ($result && mysqli_num_rows($result) == 1) {
+    // Debugging: Check for query errors
+    if (!$result) {
+        die("Query failed: " . mysqli_error($con));
+    }
+
+    if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
-
-        // Set only the user ID in the session
         $_SESSION['user_id'] = $row['User_ID'];
-
-        // Redirect to index.php after successful login
         header("Location: index.php");
         exit();
     } else {
-        $error = "Invalid email or password.";
+        $errorMessage = "Invalid email or password.";
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <h2>Login to Your Account</h2>
-    <?php if ($errorMessage): ?>
+    <?php if (!empty($errorMessage)): ?>
         <p style="color: red;"><?php echo $errorMessage; ?></p>
     <?php endif; ?>
     <form method="post" action="login.php">
