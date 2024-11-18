@@ -1,64 +1,58 @@
-username VARCHAR(30) NOT NULL UNIQUE,
-
 <?php
 session_start();
-require 'index.php';
+include("db.php");
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    $stmt = $conn->prepare("SELECT id, password FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($id, $hashed_password);
-    $stmt->fetch();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $password = mysqli_real_escape_string($con, $_POST['password']);
 
-    if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
-        $_SESSION['user_id'] = $id;
-        header("Location: dashboard.php");
+    $query = "SELECT User_ID, Name_First, Name_Last FROM USER WHERE Email = '$email' AND Password = '$password'";
+    $result = mysqli_query($con, $query);
+
+    if ($result && mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_assoc($result);
+
+        // Set only the user ID in the session
+        $_SESSION['user_id'] = $row['User_ID'];
+
+        // Redirect to index.php after successful login
+        header("Location: index.php");
         exit();
     } else {
-        $error = "Invalid username or password";
+        $error = "Invalid email or password.";
     }
 }
-?>
 
+?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Login</title>
 </head>
 <body>
-    <h2>Login</h2>
-    <form method="post" action="">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
+    <h2>Login to Your Account</h2>
+    <?php if ($errorMessage): ?>
+        <p style="color: red;"><?php echo $errorMessage; ?></p>
+    <?php endif; ?>
+    <form method="post" action="login.php">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required><br><br>
+        
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
+        <input type="password" name="password" id="password" required><br><br>
+        
         <button type="submit">Login</button>
     </form>
-    <?php if (isset($error)) { echo "<p>$error</p>"; } ?>
+
+    <p>
+        <a href="register.php">Create an Account</a> | 
+        <a href="edit_profile.php">Edit Profile</a>
+    </p>
 </body>
 </html>
-<?php
-require 'config.php';
-
-$sql = "CREATE TABLE IF NOT EXISTS users (
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-)";
-
-if ($conn->query($sql) === TRUE) {
-    echo "Table users created successfully";
-} else {
-    echo "Error creating table: " . $conn->error;
-}
-
-$conn->close();
-?>
