@@ -13,29 +13,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $password = mysqli_real_escape_string($con, $_POST['password']);
 
-    // Debugging: Output entered values (remove in production)
-    echo "Email: $email<br>";
-    echo "Password: $password<br>";
-
     // Query for plain text password matching
-    $query = "SELECT User_ID, Name_First, Name_Last FROM USER WHERE Email = '$email' AND Password = '$password'";
+    $query = "SELECT User_ID, Name_First, Name_Last, Password FROM USER WHERE Email = '$email'";
     $result = mysqli_query($con, $query);
 
-    // Debugging: Check for query errors
     if (!$result) {
         die("Query failed: " . mysqli_error($con));
     }
 
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
-        $_SESSION['user_id'] = $row['User_ID'];
-        header("Location: index.php");
-        exit();
+
+        // Check if entered password matches the stored plain text password
+        if ($password === $row['Password']) {
+            $_SESSION['user_id'] = $row['User_ID'];
+            header("Location: index.php");
+            exit();
+        } else {
+            $errorMessage = "Invalid email or password.";
+        }
     } else {
         $errorMessage = "Invalid email or password.";
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,6 +53,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="logo">
                 <img src="logo.png" alt="Logo">
             </div>
+        </div>
+
+        <!-- Home Button -->
+        <div class="home-btn-container">
+            <a href="index.php" class="home-btn">Home</a>
         </div>
 
         <div id="content_bg">
