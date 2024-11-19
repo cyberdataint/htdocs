@@ -1,5 +1,25 @@
 <?php
+session_start();
 include("db.php");
+
+$userInfo = '';
+
+// Check if the user is logged in
+if (isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id'];
+    $userQuery = "SELECT Name_First, Email FROM USER WHERE User_ID = $userId";
+    $userResult = mysqli_query($con, $userQuery);
+
+    if ($userResult) {
+        $user = mysqli_fetch_assoc($userResult);
+        $userInfo = "<p>Welcome, " . htmlspecialchars($user['Name_First']) . " (" . htmlspecialchars($user['Email']) . ") 
+        <a href='logout.php' style='margin-left: 10px; color: red;'>Logout</a></p>";
+    } else {
+        $userInfo = "<p>Unable to fetch user details.</p>";
+    }
+} else {
+    $userInfo = "<p>You are not logged in. <a href='login.php'>Login</a></p>";
+}
 
 if (isset($_GET['recipeId'])) {
     $recipeId = $_GET['recipeId'];
@@ -58,6 +78,17 @@ if (isset($_GET['recipeId'])) {
     <link href="styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+    <!-- Login status -->
+    <div id="login-link" style="text-align: right; padding: 10px;">
+        <?php echo $userInfo; ?>
+    </div>
+
+    <!-- Home Button -->
+    <div class="home-btn-container">
+        <a href="index.php" class="home-btn">Home</a>
+        <a href="comnotes.php" class="home-btn">Community Notes</a>
+    </div>
+
     <div id="content">
         <?php echo $s; ?>
         <br>

@@ -42,13 +42,13 @@ while ($row = mysqli_fetch_array($result)) {
 }
 $s .= '</tr></table>';
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>My Recipes</title>
-    <link href="styles.css" rel="stylesheet" type="text/css" />
+   <link href="styles.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
     <div id="login-link" style="text-align: right; padding: 10px;">
@@ -59,6 +59,12 @@ $s .= '</tr></table>';
         <div id="wrapper">
             <div id="header">
                 <h1>Oakland Recipe Board</h1>
+            </div>
+            <!-- Buttons aligned to the right -->
+            <div class="home-btn-container">
+                <a href="index.php" class="home-btn">Home</a>
+                <a href="comnotes.php" class="home-btn">Community Notes</a>
+                <a href="addrecipe.php" class="home-btn">Add Recipe</a>
             </div>
             <div id="content_bg" style="width:990px">
                 <div id="content" style="width:920px">

@@ -57,7 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <!-- Home Button -->
         <div class="home-btn-container">
-            <a href="index.php" class="home-btn">Home</a>
+        <a href="index.php" class="home-btn">Home</a>
+        <a href="comnotes.php" class="home-btn">Community Notes</a>
         </div>
 
         <div id="content_bg">
