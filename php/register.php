@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-include("db.php");
+include("../db.php");
 
 $errorMessage = "";
 $successMessage = "";
@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lastName = htmlspecialchars($_POST['last_name']);
     $email = htmlspecialchars($_POST['email']);
     $password = $_POST['password']; // Use plain text password
-    $isGuest = isset($_POST['guest']) ? 1 : 0;
+
 
     // Check if the email already exists
     $checkQuery = "SELECT * FROM USER WHERE Email = ?";
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("ssssi", $lastName, $firstName, $email, $password, $isGuest);
 
         if ($stmt->execute()) {
-            $successMessage = "Account created successfully! You can now <a href='login.php'>login</a>.";
+            $successMessage = "Account created successfully! You can now <a href='../php/login.php'>login</a>.";
         } else {
             $errorMessage = "Error creating account. Please try again.";
             die('Execute failed: ' . $stmt->error); // Debugging error message
@@ -58,15 +58,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+       <link href="../css/styles.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
-    <h2>Create an Account</h2>
+    <h1>Create an Account</h1>
+            <!-- Home Button -->
+        <div class="home-btn-container">
+        <a href="/index.php" class="home-btn">Home</a>
+        <a href="../php/comnotes.php" class="home-btn">Community Notes</a>
+        </div>
     <?php if ($errorMessage): ?>
         <p style="color: red;"><?php echo $errorMessage; ?></p>
     <?php elseif ($successMessage): ?>
         <p style="color: green;"><?php echo $successMessage; ?></p>
     <?php endif; ?>
-    <form method="post" action="register.php">
+    <form method="post" action="../php/register.php">
         <label for="first_name">First Name:</label>
         <input type="text" name="first_name" id="first_name" required><br><br>
         

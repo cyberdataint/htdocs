@@ -13,12 +13,12 @@ if (isset($_SESSION['user_id'])) {
     if ($userResult) {
         $user = mysqli_fetch_assoc($userResult);
         $userInfo = "<p>Welcome, " . htmlspecialchars($user['Name_First']) . " (" . htmlspecialchars($user['Email']) . ") 
-        <a href='logout.php' style='margin-left: 10px; color: red;'>Logout</a></p>";
+        <a href='./php/logout.php' style='margin-left: 10px; color: red;'>Logout</a></p>";
     } else {
         $userInfo = "<p>Unable to fetch user details.</p>";
     }
 } else {
-    $userInfo = "<p>You are not logged in. <a href='login.php'>Login</a></p>";
+    $userInfo = "<p>You are not logged in. <a href='./php/login.php'>Login</a></p>";
 }
 
 // Fetch recipes
@@ -47,7 +47,7 @@ $s .= '</tr></table>';
 <head>
     <meta charset="utf-8">
     <title>My Recipes</title>
-   <link href="styles.css" rel="stylesheet" type="text/css" />
+   <link href="./css/styles.css" rel="stylesheet" type="text/css" />
 
 </head>
 <body>
@@ -63,8 +63,8 @@ $s .= '</tr></table>';
             <!-- Buttons aligned to the right -->
             <div class="home-btn-container">
                 <a href="index.php" class="home-btn">Home</a>
-                <a href="comnotes.php" class="home-btn">Community Notes</a>
-                <a href="addrecipe.php" class="home-btn">Add Recipe</a>
+                <a href="./php/comnotes.php" class="home-btn">Community Notes</a>
+                <a href="./php/addrecipe.php" class="home-btn">Add Recipe</a>
             </div>
             <div id="content_bg" style="width:990px">
                 <div id="content" style="width:920px">

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("db.php");
+include("../db.php");
 
 // Enable error reporting
 ini_set('display_errors', 1);
@@ -8,6 +8,23 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $errorMessage = '';
+$userInfo = '';
+// Check if the user is logged in
+if (isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id'];
+    $userQuery = "SELECT Name_First, Email FROM USER WHERE User_ID = $userId";
+    $userResult = mysqli_query($con, $userQuery);
+
+    if ($userResult) {
+        $user = mysqli_fetch_assoc($userResult);
+        $userInfo = "<p>Welcome, " . htmlspecialchars($user['Name_First']) . " (" . htmlspecialchars($user['Email']) . ") 
+        <a href='./php/logout.php' style='margin-left: 10px; color: red;'>Logout</a></p>";
+    } else {
+        $userInfo = "<p>Unable to fetch user details.</p>";
+    }
+} else {
+    $userInfo = "<p>You are not logged in. <a href='./php/login.php'>Login</a></p>";
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($con, $_POST['email']);
@@ -27,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Check if entered password matches the stored plain text password
         if ($password === $row['Password']) {
             $_SESSION['user_id'] = $row['User_ID'];
-            header("Location: index.php");
+            header("Location: /index.php");
             exit();
         } else {
             $errorMessage = "Invalid email or password.";
@@ -44,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Login</title>
     <!-- Link to external CSS file -->
-    <link rel="stylesheet" href="styles.css">  <!-- Update with correct path -->
+    <link rel="stylesheet" href="../css/styles.css">  <!-- Update with correct path -->
 </head>
 <body>
     <div id="wrapper">
@@ -57,8 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <!-- Home Button -->
         <div class="home-btn-container">
-        <a href="index.php" class="home-btn">Home</a>
-        <a href="comnotes.php" class="home-btn">Community Notes</a>
+        <a href="/index.php" class="home-btn">Home</a>
+        <a href="../php/comnotes.php" class="home-btn">Community Notes</a>
         </div>
 
         <div id="content_bg">
@@ -70,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php endif; ?>
 
                 <!-- Login Form -->
-                <form method="post" action="login.php">
+                <form method="post" action="./login.php">
                     <div class="form-group">
                         <label for="email">Email:</label>
                         <input type="email" name="email" id="email" class="input-field" required>
@@ -87,8 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </form>
 
                 <p>
-                    <a href="register.php">Create an Account</a> | 
-                    <a href="edit_profile.php">Edit Profile</a>
+                    <a href="../php/register.php">Create an Account</a>  
                 </p>
             </div>
         </div>
