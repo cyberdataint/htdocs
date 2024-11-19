@@ -41,25 +41,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="styles.css">  <!-- Update with correct path -->
 </head>
 <body>
-    <h2>Login to Your Account</h2>
-    <?php if (!empty($errorMessage)): ?>
-        <p style="color: red;"><?php echo $errorMessage; ?></p>
-    <?php endif; ?>
-    <form method="post" action="login.php">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required><br><br>
-        
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required><br><br>
-        
-        <button type="submit">Login</button>
-    </form>
+    <div id="wrapper">
+        <div id="header">
+            <!-- You can add a logo here if needed -->
+            <div id="logo">
+                <img src="logo.png" alt="Logo">
+            </div>
+        </div>
 
-    <p>
-        <a href="register.php">Create an Account</a> | 
-        <a href="edit_profile.php">Edit Profile</a>
-    </p>
+        <div id="content_bg">
+            <div id="content">
+                <h2>Login to Your Account</h2>
+                
+                <?php if (!empty($errorMessage)): ?>
+                    <p style="color: red;"><?php echo $errorMessage; ?></p>
+                <?php endif; ?>
+
+                <!-- Login Form -->
+                <form method="post" action="login.php">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" id="email" class="input-field" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" class="input-field" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="login-btn">Login</button>
+                    </div>
+                </form>
+
+                <p>
+                    <a href="register.php">Create an Account</a> | 
+                    <a href="edit_profile.php">Edit Profile</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

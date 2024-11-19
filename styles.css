@@ -103,3 +103,49 @@ h2 {
 	float:left;
 }
 
+/* Additional Styles for Login Page */
+#content {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-btn {
+    background-color: #037b8d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background-color: #026d7a;
+}
+
+h2 {
+    color: #037b8d;
+}
+
+a {
+    color: #037b8d;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

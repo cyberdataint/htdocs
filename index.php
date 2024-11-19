@@ -4,8 +4,6 @@ include("db.php");
 
 $userInfo = '';
 
-
-
 // Check if the user is logged in
 if (isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
@@ -14,13 +12,15 @@ if (isset($_SESSION['user_id'])) {
 
     if ($userResult) {
         $user = mysqli_fetch_assoc($userResult);
-        $userInfo = "<p>Welcome, " . htmlspecialchars($user['Name_First']) . " (" . htmlspecialchars($user['Email']) . ")</p>";
+        $userInfo = "<p>Welcome, " . htmlspecialchars($user['Name_First']) . " (" . htmlspecialchars($user['Email']) . ") 
+        <a href='logout.php' style='margin-left: 10px; color: red;'>Logout</a></p>";
     } else {
         $userInfo = "<p>Unable to fetch user details.</p>";
     }
 } else {
     $userInfo = "<p>You are not logged in. <a href='login.php'>Login</a></p>";
 }
+
 // Fetch recipes
 $q = "SELECT Recipe_ID, Recipe_Name FROM RECIPE ORDER BY Recipe_Name";
 $result = mysqli_query($con, $q) or die(mysqli_error($con));
