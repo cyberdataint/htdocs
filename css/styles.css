@@ -37,11 +37,7 @@ a:hover {
 	
 	
 }
-#content_bg {
-	background-color:#FFF;
-	padding-top:5px;
-    
-}
+
 
 #content {
 	padding:20px;
@@ -183,3 +179,48 @@ a:hover {
 
 
 
+
+#theme-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+#theme-toggle:hover {
+    background-color: #ccc;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-mode #header {
+    background-color: #444;
+}
+body.dark-mode #content {
+    background-color: #555;
+}
+
+body.dark-mode #theme-toggle {
+    background-color: #444;
+    color: #fff;
+}
+
+body.dark-mode #theme-toggle:hover {
+    background-color: #555;
+}
+
+/* Other general styles for your content */
+.home-btn-container {
+    text-align: right;
+    margin-top: 20px;
+}

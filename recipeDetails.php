@@ -73,12 +73,33 @@ if (isset($_GET['recipeId'])) {
     <meta charset="utf-8">
     <title>Recipe Details</title>
     <link href="../css/styles.css" rel="stylesheet" type="text/css">  <!-- Updated path -->
+    <script>
+        // JavaScript to toggle dark and light modes
+        function toggleTheme() {
+            const currentTheme = document.body.classList.toggle('dark-mode');
+            // Store the selected theme in localStorage
+            localStorage.setItem('theme', currentTheme ? 'dark' : 'light');
+        }
+
+        // On page load, set the theme based on localStorage
+        window.onload = function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        };
+    </script>
 </head>
 <body>
     <!-- Login status -->
     <div id="login-link" style="text-align: right; padding: 10px;">
         <?php echo $userInfo; ?>
     </div>
+
+    <!-- Dark/Light Mode Toggle Button -->
+    <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
 
     <!-- Home Button -->
     <div class="home-btn-container">

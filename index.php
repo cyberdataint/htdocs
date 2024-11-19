@@ -47,8 +47,25 @@ $s .= '</tr></table>';
 <head>
     <meta charset="utf-8">
     <title>My Recipes</title>
-   <link href="./css/styles.css" rel="stylesheet" type="text/css" />
+    <link href="./css/styles.css" rel="stylesheet" type="text/css" />
+    <script>
+        // JavaScript to toggle dark and light modes
+        function toggleTheme() {
+            const currentTheme = document.body.classList.toggle('dark-mode');
+            // Store the selected theme in localStorage
+            localStorage.setItem('theme', currentTheme ? 'dark' : 'light');
+        }
 
+        // On page load, set the theme based on localStorage
+        window.onload = function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        };
+    </script>
 </head>
 <body>
     <div id="login-link" style="text-align: right; padding: 10px;">
@@ -59,13 +76,18 @@ $s .= '</tr></table>';
         <div id="wrapper">
             <div id="header">
                 <h1>Oakland Recipe Board</h1>
+                
+                <!-- Dark/Light Mode Toggle Button -->
+                <button id="theme-toggle" onclick="toggleTheme()">🌙</button> <!-- Replace with icon if needed -->
             </div>
+
             <!-- Buttons aligned to the right -->
             <div class="home-btn-container">
                 <a href="index.php" class="home-btn">Home</a>
                 <a href="./php/comnotes.php" class="home-btn">Community Notes</a>
                 <a href="./php/addrecipe.php" class="home-btn">Add Recipe</a>
             </div>
+
             <div id="content_bg" style="width:990px">
                 <div id="content" style="width:920px">
                     <?php echo $s; ?>

@@ -56,12 +56,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <!-- Link to external CSS file -->
-    <link rel="stylesheet" href="../css/styles.css">  <!-- Update with correct path -->
+    <meta charset="utf-8">
+    <title>My Recipes</title>
+    <link href="../css/styles.css" rel="stylesheet" type="text/css" />
+    <script>
+        // JavaScript to toggle dark and light modes
+        function toggleTheme() {
+            const currentTheme = document.body.classList.toggle('dark-mode');
+            // Store the selected theme in localStorage
+            localStorage.setItem('theme', currentTheme ? 'dark' : 'light');
+        }
+
+        // On page load, set the theme based on localStorage
+        window.onload = function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        };
+    </script>
 </head>
 <body>
     <div id="wrapper">
@@ -77,7 +94,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="/index.php" class="home-btn">Home</a>
         <a href="../php/comnotes.php" class="home-btn">Community Notes</a>
         </div>
-
+ <!-- Dark/Light Mode Toggle Button -->
+                <button id="theme-toggle" onclick="toggleTheme()">🌙</button> <!-- Replace with icon if needed -->
         <div id="content_bg">
             <div id="content">
                 <h2>Login to Your Account</h2>
