@@ -4,7 +4,7 @@ include("./db.php");
 
 $userInfo = '';
 
-// Check if the user is logged in
+
 if (isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
     $userQuery = "SELECT Name_First, Email FROM USER WHERE User_ID = $userId";
@@ -24,14 +24,14 @@ if (isset($_SESSION['user_id'])) {
 if (isset($_GET['recipeId'])) {
     $recipeId = $_GET['recipeId'];
 
-    // Calculate the average rating using Rating_Value column from the Rating table
+    
     $q0 = "SELECT AVG(Rating_Value) AS avg_rating FROM RATING WHERE Recipe_ID = $recipeId;";
     $result0 = mysqli_query($con, $q0) or die(mysqli_error($con));
     $row0 = mysqli_fetch_assoc($result0);
     $avgRating = $row0['avg_rating'];
     
     
-    // Fetch recipe details including creator information
+    
     $q = "SELECT r.Recipe_Name, r.Description, r.Ingredients, r.Instructions, u.Name_First AS Creator 
           FROM RECIPE r 
           JOIN USER u ON r.User_ID = u.User_ID 
@@ -46,7 +46,23 @@ if (isset($_GET['recipeId'])) {
     $s .= '<tr><td><h2>Instructions</h2><p>' . htmlspecialchars($row['Instructions']) . '</p></td></tr>';
     $s .= '</table>';
 
-    // Fetch and display comments
+    // Get the current vote count for the recipe
+$voteQuery = "SELECT SUM(Rating_Value) AS vote_total FROM RATING WHERE Recipe_ID = $recipeId";
+$voteResult = mysqli_query($con, $voteQuery);
+$voteRow = mysqli_fetch_assoc($voteResult);
+$currentVotes = $voteRow['vote_total'] ?? 0; // Default to 0 if no votes
+
+// Add the voting buttons and display to the HTML
+$s .= '<div id="votes" style="text-align:center; margin-top: 20px;">
+            <button onclick="submitVote(' . $recipeId . ', 1)">👍 Upvote</button>
+            <button onclick="submitVote(' . $recipeId . ', -1)">👎 Downvote</button>
+            <p id="vote-count">Votes: ' . $currentVotes . '</p>
+       </div>';
+
+
+    
+
+    
     $ss = '<h2>Visitor Comments:</h2><table>';
     $q3 = "SELECT c.Comment_Text, c.Created_At, u.Name_First 
            FROM COMMENT c 
@@ -74,14 +90,14 @@ if (isset($_GET['recipeId'])) {
     <title>Recipe Details</title>
     <link href="../css/styles.css" rel="stylesheet" type="text/css">  <!-- Updated path -->
     <script>
-        // JavaScript to toggle dark and light modes
+        
         function toggleTheme() {
             const currentTheme = document.body.classList.toggle('dark-mode');
-            // Store the selected theme in localStorage
+            
             localStorage.setItem('theme', currentTheme ? 'dark' : 'light');
         }
 
-        // On page load, set the theme based on localStorage
+       
         window.onload = function() {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
@@ -90,6 +106,19 @@ if (isset($_GET['recipeId'])) {
                 document.body.classList.remove('dark-mode');
             }
         };
+
+        // Voting JavaScript
+    function submitVote(recipeId, ratingValue) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "vote_handler.php", true); // Ensure the path is correct
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                document.getElementById("vote-count").textContent = "Votes: " + xhr.responseText;
+            }
+        };
+        xhr.send(`recipeId=${recipeId}&ratingValue=${ratingValue}`);
+    }
     </script>
 </head>
 <body>
