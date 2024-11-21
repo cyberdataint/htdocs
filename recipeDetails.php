@@ -109,7 +109,7 @@ $s .= '<div id="votes" style="text-align:center; margin-top: 20px;">
 
         function submitVote(recipeId, ratingValue) {
      const xhr = new XMLHttpRequest();
-     xhr.open("POST", "vote_handler.php", true); 
+     xhr.open("POST", "php/vote_handler.php", true); 
      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
      xhr.onreadystatechange = function () {
          if (xhr.readyState === 4 && xhr.status === 200) {
