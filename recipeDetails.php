@@ -46,13 +46,13 @@ if (isset($_GET['recipeId'])) {
     $s .= '<tr><td><h2>Instructions</h2><p>' . htmlspecialchars($row['Instructions']) . '</p></td></tr>';
     $s .= '</table>';
 
-    // Get the current vote count for the recipe
+    
 $voteQuery = "SELECT SUM(Rating_Value) AS vote_total FROM RATING WHERE Recipe_ID = $recipeId";
 $voteResult = mysqli_query($con, $voteQuery);
 $voteRow = mysqli_fetch_assoc($voteResult);
 $currentVotes = $voteRow['vote_total'] ?? 0; // Default to 0 if no votes
 
-// Add the voting buttons and display to the HTML
+
 $s .= '<div id="votes" style="text-align:center; margin-top: 20px;">
             <button onclick="submitVote(' . $recipeId . ', 1)">👍 Upvote</button>
             <button onclick="submitVote(' . $recipeId . ', -1)">👎 Downvote</button>
@@ -107,18 +107,18 @@ $s .= '<div id="votes" style="text-align:center; margin-top: 20px;">
             }
         };
 
-        // Voting JavaScript
-    function submitVote(recipeId, ratingValue) {
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "vote_handler.php", true); // Ensure the path is correct
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                document.getElementById("vote-count").textContent = "Votes: " + xhr.responseText;
-            }
-        };
-        xhr.send(`recipeId=${recipeId}&ratingValue=${ratingValue}`);
-    }
+        function submitVote(recipeId, ratingValue) {
+     const xhr = new XMLHttpRequest();
+     xhr.open("POST", "vote_handler.php", true); 
+     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+     xhr.onreadystatechange = function () {
+         if (xhr.readyState === 4 && xhr.status === 200) {
+             const response = JSON.parse(xhr.responseText); 
+             document.getElementById("vote-count").textContent = "Votes: " + response.vote_count; 
+         }
+     };
+     xhr.send(`recipeId=${recipeId}&ratingValue=${ratingValue}`);
+ }
     </script>
 </head>
 <body>

@@ -1,51 +1,55 @@
 <?php
-include("./db.php");
 session_start();
+include('db.php');
 
 
 if (!isset($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo "Unauthorized";
-    exit;
+    die("User not logged in");
 }
 
 $userId = $_SESSION['user_id'];
-$recipeId = $_POST['recipeId'];
-$ratingValue = $_POST['ratingValue'];
+$recipeId = $_POST['recipeId']; 
+$ratingValue = $_POST['ratingValue']; 
 
 
-if (!is_numeric($recipeId) || !in_array($ratingValue, [-1, 1])) {
-    http_response_code(400);
-    echo "Invalid input";
-    exit;
+$queryCheck = "SELECT * FROM RATING WHERE User_ID = ? AND Recipe_ID = ?";
+$stmt = mysqli_prepare($con, $queryCheck);
+mysqli_stmt_bind_param($stmt, "ii", $userId, $recipeId);
+mysqli_stmt_execute($stmt);
+$resultCheck = mysqli_stmt_get_result($stmt);
+
+if (!$resultCheck) {
+    die('Error checking for existing vote: ' . mysqli_error($con)); 
 }
-
-$queryCheck = "SELECT * FROM RATING WHERE User_ID = $userId AND Recipe_ID = $recipeId";
-$resultCheck = mysqli_query($con, $queryCheck);
 
 if (mysqli_num_rows($resultCheck) > 0) {
-    $queryUpdate = "UPDATE RATING SET Rating_Value = $ratingValue, Created_At = NOW() WHERE User_ID = $userId AND Recipe_ID = $recipeId";
-    $resultUpdate = mysqli_query($con, $queryUpdate);
-
-    if ($resultUpdate) {
-        echo "Vote updated successfully";
-    } else {
-        echo "Error updating vote: " . mysqli_error($con);
+    // User has voted before, update the vote
+    $queryUpdate = "UPDATE RATING SET Rating_Value = ?, Created_At = NOW() WHERE User_ID = ? AND Recipe_ID = ?";
+    $stmtUpdate = mysqli_prepare($con, $queryUpdate);
+    mysqli_stmt_bind_param($stmtUpdate, "iii", $ratingValue, $userId, $recipeId);
+    $resultUpdate = mysqli_stmt_execute($stmtUpdate);
+    if (!$resultUpdate) {
+        die('Error updating vote: ' . mysqli_error($con)); 
     }
 } else {
-  
-    $queryInsert = "INSERT INTO RATING (User_ID, Recipe_ID, Rating_Value, Created_At) VALUES ($userId, $recipeId, $ratingValue, NOW())";
-    $resultInsert = mysqli_query($con, $queryInsert);
-
-    if ($resultInsert) {
-        echo "Vote inserted successfully";
-    } else {
-        echo "Error inserting vote: " . mysqli_error($con);
+    // User hasn't voted, insert a new vote
+    $queryInsert = "INSERT INTO RATING (User_ID, Recipe_ID, Rating_Value, Created_At) VALUES (?, ?, ?, NOW())";
+    $stmtInsert = mysqli_prepare($con, $queryInsert);
+    mysqli_stmt_bind_param($stmtInsert, "iii", $userId, $recipeId, $ratingValue);
+    $resultInsert = mysqli_stmt_execute($stmtInsert);
+    if (!$resultInsert) {
+        die('Error inserting vote: ' . mysqli_error($con)); 
     }
 }
 
-$querySum = "SELECT SUM(Rating_Value) AS vote_total FROM RATING WHERE Recipe_ID = $recipeId";
-$resultSum = mysqli_query($con, $querySum);
-$rowSum = mysqli_fetch_assoc($resultSum);
-echo $rowSum['vote_total'] ?? 0;
+
+$queryVoteCount = "SELECT COUNT(*) AS vote_count FROM RATING WHERE Recipe_ID = ?";
+$stmtVoteCount = mysqli_prepare($con, $queryVoteCount);
+mysqli_stmt_bind_param($stmtVoteCount, "i", $recipeId);
+mysqli_stmt_execute($stmtVoteCount);
+$resultVoteCount = mysqli_stmt_get_result($stmtVoteCount);
+$voteRow = mysqli_fetch_assoc($resultVoteCount);
+$currentVotes = $voteRow['vote_count'] ?? 0; // Default to 0 if no votes
+
+echo json_encode(['vote_count' => $currentVotes]);
 ?>
