@@ -83,10 +83,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div id="wrapper">
         <div id="header">
-            <!-- You can add a logo here if needed -->
-            <div id="logo">
-                <img src="logo.png" alt="Logo">
-            </div>
+            <h1>Oakland Recipe Board</h1>
+           
         </div>
 
         <!-- Home Button -->
