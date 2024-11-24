@@ -1,0 +1,97 @@
+/* Layout and Physical Appearance for Recipe Management System */
+
+/* Center and expand recipe form container */
+.recipe-form {
+  max-width: 800px; /* Increased width to make it take up more space */
+  margin: 50px auto; /* Centers the form vertically and horizontally */
+  padding: 30px; /* Adds padding around the form content */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #ffffff; /* Ensure a white background for contrast */
+}
+
+/* Adjust labels and inputs to center and align better */
+.recipe-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  text-align: left; /* Align labels to the left */
+}
+
+.recipe-form input,
+.recipe-form textarea,
+.recipe-form select {
+  width: 100%; /* Make input, textarea, and select span full width */
+  padding: 12px; /* Increased padding inside the input/textarea */
+  margin-bottom: 20px; /* Add more spacing between inputs */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Ensures padding doesn't overflow the container */
+  font-size: 16px; /* Improve readability */
+}
+
+/* File upload field styling */
+.recipe-form input[type="file"] {
+  padding: 5px;
+  font-size: 14px; /* Smaller font size for file input field */
+  border: none; /* Remove border for consistency */
+}
+
+/* Dropdown menu for category */
+.recipe-form select {
+  appearance: none; /* Remove default browser styling */
+  background: #f9f9f9; /* Light background for dropdown */
+  cursor: pointer;
+}
+
+/* Adjust submit button for better alignment */
+.recipe-form button {
+  display: block;
+  width: 100%; /* Full-width button for consistency */
+  padding: 12px; /* Increased padding for better click area */
+  font-size: 18px; /* Slightly larger text for better readability */
+  border-radius: 5px;
+  border: none; /* Remove border for cleaner look */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.recipe-form button:hover {
+  background-color: #0056b3; /* Add hover effect for button */
+  color: #ffffff; /* Ensure text remains readable */
+}
+
+/* Back to Home button styling */
+.navigation {
+  text-align: center;
+  margin: 20px 0; /* Add spacing around navigation */
+}
+
+.home-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #007bff; /* Primary button color */
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.home-button:hover {
+  background-color: #0056b3; /* Darker shade for hover */
+}
+
+/* Increase main content area width */
+main {
+  max-width: 90%; /* Allow main content to take up more of the page width */
+  margin: 0 auto; /* Center the main content */
+}
+
+/* Add spacing and alignment for the footer */
+.footer {
+  margin-top: 40px; /* Increased spacing above footer */
+  text-align: center;
+  font-size: 14px; /* Adjust font size for better readability */
+  color: #777; /* Subtle color for footer text */
+}
