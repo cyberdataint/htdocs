@@ -1,23 +1,15 @@
 <?php
 session_start();
-include("./db.php");
+include("../db.php");
 
-$userInfo = '';
 $message = '';
+$userInfo = '';
 
 // Check if user is logged in
 if (isset($_SESSION['user_id'])) {
-    $userId = $_SESSION['user_id'];
-    $userQuery = "SELECT Name_First, Email FROM users WHERE User_ID = $userId";
-    $userResult = mysqli_query($con, $userQuery);
-
-    if ($userResult) {
-        $user = mysqli_fetch_assoc($userResult);
-        $userInfo = "<p>Welcome, " . htmlspecialchars($user['Name_First']) . " (" . htmlspecialchars($user['Email']) . ") 
-        <a href='./php/logout.php' style='margin-left: 10px; color: red;'>Logout</a></p>";
-    } else {
-        $userInfo = "<p>Unable to fetch user details.</p>";
-    }
+    $userId = $_SESSION['user_id'];  // Get the logged-in user's ID
+    // The users table query is now unnecessary as we just need to reference user_id
+    $userInfo = "<p>Welcome, User #$userId. <a href='./php/logout.php' style='margin-left: 10px; color: red;'>Logout</a></p>";
 } else {
     $userInfo = "<p>You are not logged in. <a href='./php/login.php'>Login</a></p>";
 }
@@ -27,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $recipeName = $con->real_escape_string($_POST['recipe-name']);
     $ingredients = $con->real_escape_string($_POST['recipe-ingredients']);
     $steps = $con->real_escape_string($_POST['recipe-steps']);
-    $category = $con->real_escape_string($_POST['recipe-category'] ?? '');
+    $description = $con->real_escape_string($_POST['recipe-description']);
+    $foodType = $con->real_escape_string($_POST['recipe-category'] ?? '');
     $imagePath = null;
 
     // Handle file upload if an image is provided
@@ -40,9 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Insert into database
-    $insertQuery = "INSERT INTO recipes (Recipe_Name, Ingredients, Steps, Category, User_ID, Image_Path) 
-                    VALUES ('$recipeName', '$ingredients', '$steps', '$category', $userId, '$imagePath')";
+    // Insert into recipes table
+    $insertQuery = "INSERT INTO recipes (Recipe_Name, Ingredients, Instructions, Created_By, Food_Type, Description, Image_Path) 
+                    VALUES ('$recipeName', '$ingredients', '$steps', $userId, '$foodType', '$description', '$imagePath')";
 
     if ($con->query($insertQuery) === TRUE) {
         $message = "<p style='color: green;'>Recipe added successfully!</p>";
@@ -78,13 +71,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label for="recipe-name">Recipe Name:</label>
                 <input type="text" id="recipe-name" name="recipe-name" required>
 
+                <label for="recipe-description">Description:</label>
+                <textarea id="recipe-description" name="recipe-description" rows="3" required></textarea>
+
                 <label for="recipe-ingredients">Ingredients:</label>
                 <textarea id="recipe-ingredients" name="recipe-ingredients" rows="5" required></textarea>
 
                 <label for="recipe-steps">Steps:</label>
                 <textarea id="recipe-steps" name="recipe-steps" rows="5" required></textarea>
 
-                <label for="recipe-category">Category (optional):</label>
+                <label for="recipe-category">Food Type (optional):</label>
                 <select id="recipe-category" name="recipe-category">
                     <option value="">--Select--</option>
                     <option value="Appetizer">Appetizer</option>
