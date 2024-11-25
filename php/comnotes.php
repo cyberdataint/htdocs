@@ -1,8 +1,7 @@
 <?php
-// Start the session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
+include("../db.php");
+
 
 // Include the database connection
 if (!file_exists("../db.php")) {
@@ -37,7 +36,77 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
 } else {
     die("Invalid request or not logged in.");
 }
+
+
+
+
+
+// Include the database connection
+if (!file_exists("../db.php")) {
+    die("Database connection file not found.");
+}
+include("../db.php");
+
+// Validate Recipe ID
+if (!isset($_GET['recipeId']) || !is_numeric($_GET['recipeId'])) {
+    die("Invalid or missing Recipe ID.");
+}
+$recipeId = intval($_GET['recipeId']);
+
+// Notes form logic
+$notesForm = '';
+if (isset($_SESSION['user_id'])) {
+    $notesForm = '
+    <form method="POST" action="./php/add_note.php">
+        <textarea name="note-text" rows="4" cols="50" placeholder="Add your community note here..." required></textarea>
+        <input type="hidden" name="recipe-id" value="' . htmlspecialchars($recipeId) . '">
+        <button type="submit">Add Note</button>
+    </form>';
+} else {
+    $notesForm = '<p>You must <a href="./php/login.php">log in</a> to add community notes.</p>';
+}
+
+// Fetch notes from the database
+$notesQuery = "SELECT n.Note_Text, n.Created_At, u.Name_First 
+               FROM COMMUNITY_NOTES n 
+               JOIN USER u ON n.User_ID = u.User_ID 
+               WHERE n.Recipe_ID = ? 
+               ORDER BY n.Created_At DESC";
+$stmt = $con->prepare($notesQuery);
+$notesSection = '<h2>Community Notes:</h2><table>';
+if ($stmt) {
+    $stmt->bind_param("i", $recipeId);
+    $stmt->execute();
+    $notesResult = $stmt->get_result();
+
+    while ($noteRow = $notesResult->fetch_assoc()) {
+        $noteDate = date('Y-m-d H:i:s', strtotime($noteRow['Created_At']));
+        $notesSection .= '<tr><td><strong>' . htmlspecialchars($noteRow['Name_First']) . ':</strong> ' 
+                        . htmlspecialchars($noteRow['Note_Text']) 
+                        . ' <br><small>' . $noteDate . '</small></td></tr>';
+    }
+    $notesResult->close();
+    $notesSection .= '</table>';
+} else {
+    $notesSection .= '<tr><td>No notes available for this recipe.</td></tr></table>';
+}
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Notes</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <div id="community-notes-section">
+        <?php echo $notesForm; ?>
+        <br>
+        <?php echo $notesSection; ?>
+    </div>
+</body>
+</html>
 
 
 
