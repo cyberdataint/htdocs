@@ -32,12 +32,12 @@ if (isset($_GET['recipeId'])) {
     
     
     
-    $q = "SELECT r.Recipe_Name, r.Description, r.Ingredients, r.Instructions, u.Name_First AS Creator 
-          FROM RECIPE r 
-          JOIN USER u ON r.User_ID = u.User_ID 
-          WHERE r.Recipe_ID = $recipeId;";
-    $result = mysqli_query($con, $q) or die(mysqli_error($con));
-    $row = mysqli_fetch_assoc($result);
+$q = "SELECT r.Recipe_Name, r.Description, r.Ingredients, r.Instructions, u.Name_First AS Creator 
+      FROM RECIPE r 
+      JOIN USER u ON r.Created_By = u.User_ID 
+      WHERE r.Recipe_ID = $recipeId;";
+$result = mysqli_query($con, $q) or die(mysqli_error($con));
+$row = mysqli_fetch_assoc($result);
 
     $s = '<table align="center" dir="ltr">';
     $s .= '<tr><td align="left" id="foodName" colspan=2 style="padding:10px;"><h1>' . htmlspecialchars($row['Recipe_Name']) . '</h1></td></tr>';
