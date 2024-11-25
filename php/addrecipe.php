@@ -5,13 +5,20 @@ include("../db.php");
 $message = '';
 $userInfo = '';
 
-// Check if user is logged in
 if (isset($_SESSION['user_id'])) {
-    $userId = $_SESSION['user_id']; // Get the logged-in user's ID
-    $userInfo = "<p>Welcome, User #$userId. <a href='./php/logout.php' style='margin-left: 10px; color: red;'>Logout</a></p>";
+    $userId = $_SESSION['user_id'];
+    $userQuery = "SELECT Name_First, Email FROM USER WHERE User_ID = $userId";
+    $userResult = mysqli_query($con, $userQuery);
+
+    if ($userResult) {
+        $user = mysqli_fetch_assoc($userResult);
+        $userInfo = "<p>Welcome, " . htmlspecialchars($user['Name_First']) . " (" . htmlspecialchars($user['Email']) . ") 
+        <a href='./php/logout.php' style='margin-left: 10px; color: red;'>Logout</a></p>";
+    } else {
+        $userInfo = "<p>Unable to fetch user details.</p>";
+    }
 } else {
     $userInfo = "<p>You are not logged in. <a href='./php/login.php'>Login</a></p>";
-    $userId = null; // Ensure $userId is null if no session exists
 }
 
 // Handle form submission
@@ -30,15 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $insertQuery = "INSERT INTO recipes (Recipe_Name, Ingredients, Instructions, Created_By, Food_Type, Description)
                         VALUES ('$recipeName', '$ingredients', '$steps', $userId, '$foodType', '$description')";
 
-        if ($con->query($insertQuery) === TRUE) {
-            $message = "<p style='color: green;'>Recipe added successfully!</p>";
-        } else {
-            error_log("SQL Error: " . $con->error); // Log the error for debugging
-            $message = "<p style='color: red;'>Error adding recipe: " . htmlspecialchars($con->error) . "</p>";
-        }
+
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
