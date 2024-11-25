@@ -61,25 +61,28 @@
   color: #ffffff; /* Ensure text remains readable */
 }
 
-/* Back to Home button styling */
-.navigation {
-  text-align: center;
-  margin: 20px 0; /* Add spacing around navigation */
-}
-
-.home-button {
-  display: inline-block;
-  padding: 10px 20px;
+.home-btn {
+  background: linear-gradient(135deg, #a9aaaa, #66cc99); /* Teal to light green gradient */
+  color: #ffffff; /* White text */
+  padding: 12px 25px;
+  border: 2px solid #037b8d; /* Teal border */
+  border-radius: 10px; /* Rounded corners */
   font-size: 16px;
+  font-weight: bold;
   text-decoration: none;
-  color: #fff;
-  background-color: #007bff; /* Primary button color */
-  border-radius: 5px;
-  transition: background-color 0.3s;
+  display: inline-block;
+  cursor: pointer;
+  margin: 10px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
-.home-button:hover {
-  background-color: #0056b3; /* Darker shade for hover */
+/* Hover Effect */
+.home-btn:hover {
+  background: linear-gradient(135deg, #66cc99, #037b8d); /* Reverse gradient */
+  border-color: #fcfaf7; /* Soft white border on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* More prominent shadow */
+  transform: translateY(-2px); /* Slight lift */
 }
 
 /* Increase main content area width */

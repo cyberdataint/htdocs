@@ -1,0 +1,211 @@
+/* General Styles */
+body {
+    background-color:#efecdb;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6em;
+    text-align: center;
+}
+
+/* Header Styling */
+#forum-header {
+    background: linear-gradient(135deg, #037b8d, #66cc99);
+    color: #fff;
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+
+#forum-header h1 {
+    font-size: 36px;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+/* Forum Section Styling */
+#forum-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: left;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Post Form Styling */
+#forum-section form {
+    margin-bottom: 30px;
+}
+
+#forum-section textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+}
+
+#forum-section button {
+    background: #037b8d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#forum-section button:hover {
+    background-color: #026d7a;
+}
+
+/* Posts Styling */
+.post {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #037b8d;
+}
+
+.post p {
+    margin: 10px 0 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.post small {
+    color: #666;
+    font-size: 12px;
+}
+
+/* Empty State */
+#empty-state {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #999;
+}
+
+/* Utility Buttons */
+.utility-button {
+    background: linear-gradient(135deg, #a9aaaa, #66cc99);
+    color: #fff;
+    padding: 8px 15px;
+    border: 2px solid #037b8d;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+.utility-button:hover {
+    background: linear-gradient(135deg, #66cc99, #037b8d);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    #forum-section {
+        padding: 15px;
+    }
+
+    #forum-header h1 {
+        font-size: 28px;
+    }
+
+    #forum-section textarea {
+        height: 80px;
+    }
+
+    .post {
+        padding: 10px;
+    }
+
+    .utility-button {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+}
+.home-btn {
+    background: linear-gradient(135deg, #a9aaaa, #66cc99); /* Teal to light green gradient */
+    color: #ffffff; /* White text */
+    padding: 12px 25px;
+    border: 2px solid #037b8d; /* Teal border */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    margin: 10px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+/* Hover Effect */
+.home-btn:hover {
+    background: linear-gradient(135deg, #66cc99, #037b8d); /* Reverse gradient */
+    border-color: #fcfaf7; /* Soft white border on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* More prominent shadow */
+    transform: translateY(-2px); /* Slight lift */
+}
+
+
+
+
+#theme-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+#theme-toggle:hover {
+    background-color: #ccc;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-mode #header {
+    background-color: #444;
+}
+body.dark-mode #content {
+    background-color: #555;
+}
+
+body.dark-mode #theme-toggle {
+    background-color: #444;
+    color: #fff;
+}
+
+body.dark-mode #theme-toggle:hover {
+    background-color: #555;
+}

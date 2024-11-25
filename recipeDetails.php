@@ -63,19 +63,8 @@ $s .= '<div id="votes" style="text-align:center; margin-top: 20px;">
     
 
     
-    $ss = '<h2>Visitor Comments:</h2><table>';
-    $q3 = "SELECT c.Comment_Text, c.Created_At, u.Name_First 
-           FROM COMMENT c 
-           JOIN USER u ON c.User_ID = u.User_ID 
-           WHERE Recipe_ID = $recipeId 
-           ORDER BY c.Created_At DESC;";
-    $result3 = mysqli_query($con, $q3) or die(mysqli_error($con));
-
-    while ($row3 = mysqli_fetch_assoc($result3)) {
-        $commentDate = date('Y-m-d H:i:s', strtotime($row3['Created_At']));
-        $ss .= '<tr><td><strong>' . htmlspecialchars($row3['Name_First']) . ':</strong> ' . htmlspecialchars($row3['Comment_Text']) . ' <br><small>' . $commentDate . '</small></td></tr>';
-    }
-    $ss .= '</table>';
+    
+   
 } else {
     echo "<p>No recipe selected.</p>";
 }
@@ -140,7 +129,6 @@ $s .= '<div id="votes" style="text-align:center; margin-top: 20px;">
     <div id="content">
         <?php echo $s; ?>
         <br>
-        <?php echo $ss; ?>
     </div>
 </body>
 </html>
